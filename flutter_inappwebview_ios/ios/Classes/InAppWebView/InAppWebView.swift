@@ -189,7 +189,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate,
 
         lastLongPressTouchPoint = touchLocation
 
-        evaluateJavaScript("window.\(JAVASCRIPT_BRIDGE_NAME)._findElementsAtPoint(\(touchLocation.x),\(touchLocation.y))", completionHandler: {(value, error) in
+        _evaluateJavaScript("window.\(JAVASCRIPT_BRIDGE_NAME)._findElementsAtPoint(\(touchLocation.x),\(touchLocation.y))", completionHandler: {(value, error) in
             if error != nil {
                 print("Long press gesture recognizer error: \(error?.localizedDescription ?? "")")
             } else if let value = value as? [String: Any?] {
@@ -683,7 +683,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate,
         
         if let lastLongPressTouhLocation = lastLongPressTouchPoint {
             if configuration.preferences.javaScriptEnabled {
-                self.evaluateJavaScript("window.\(JAVASCRIPT_BRIDGE_NAME)._findElementsAtPoint(\(lastLongPressTouhLocation.x),\(lastLongPressTouhLocation.y))", completionHandler: {(value, error) in
+                self._evaluateJavaScript("window.\(JAVASCRIPT_BRIDGE_NAME)._findElementsAtPoint(\(lastLongPressTouhLocation.x),\(lastLongPressTouhLocation.y))", completionHandler: {(value, error) in
                     if error != nil {
                         print("Long press gesture recognizer error: \(error?.localizedDescription ?? "")")
                     } else if let value = value as? [String: Any?] {
@@ -1429,7 +1429,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate,
         }
     }
 
-    public override func evaluateJavaScript(_ javaScriptString: String, completionHandler: (@MainActor @Sendable (Any?, (any Error)?) -> Void)? = nil) {
+    public func _evaluateJavaScript(_ javaScriptString: String, completionHandler: ((Any?, Error?) -> Void)? = nil) {
         if let applePayAPIEnabled = settings?.applePayAPIEnabled, applePayAPIEnabled {
             completionHandler?(nil, nil)
             return
@@ -3072,7 +3072,7 @@ if(window.\(JAVASCRIPT_BRIDGE_NAME)[\(_callHandlerID)] != null) {
     
     public func getSelectedText(completionHandler: @escaping (Any?, Error?) -> Void) {
         if configuration.preferences.javaScriptEnabled {
-            evaluateJavaScript(PluginScriptsUtil.GET_SELECTED_TEXT_JS_SOURCE, completionHandler: completionHandler)
+            _evaluateJavaScript(PluginScriptsUtil.GET_SELECTED_TEXT_JS_SOURCE, completionHandler: completionHandler)
         } else {
             completionHandler(nil, nil)
         }
@@ -3080,7 +3080,7 @@ if(window.\(JAVASCRIPT_BRIDGE_NAME)[\(_callHandlerID)] != null) {
     
     public func getHitTestResult(completionHandler: @escaping (HitTestResult) -> Void) {
         if configuration.preferences.javaScriptEnabled, let lastTouchLocation = lastTouchPoint {
-            self.evaluateJavaScript("window.\(JAVASCRIPT_BRIDGE_NAME)._findElementsAtPoint(\(lastTouchLocation.x),\(lastTouchLocation.y))", completionHandler: {(value, error) in
+            self._evaluateJavaScript("window.\(JAVASCRIPT_BRIDGE_NAME)._findElementsAtPoint(\(lastTouchLocation.x),\(lastTouchLocation.y))", completionHandler: {(value, error) in
                 if error != nil {
                     print("getHitTestResult error: \(error?.localizedDescription ?? "")")
                     completionHandler(HitTestResult(type: .unknownType, extra: nil))
@@ -3100,7 +3100,7 @@ if(window.\(JAVASCRIPT_BRIDGE_NAME)[\(_callHandlerID)] != null) {
         if configuration.preferences.javaScriptEnabled {
             // add some delay to make it sure _lastAnchorOrImageTouched is updated
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                self.evaluateJavaScript("window.\(JAVASCRIPT_BRIDGE_NAME)._lastAnchorOrImageTouched", completionHandler: {(value, error) in
+                self._evaluateJavaScript("window.\(JAVASCRIPT_BRIDGE_NAME)._lastAnchorOrImageTouched", completionHandler: {(value, error) in
                     let lastAnchorOrImageTouched = value as? [String: Any?]
                     completionHandler(lastAnchorOrImageTouched, error)
                 })
@@ -3114,7 +3114,7 @@ if(window.\(JAVASCRIPT_BRIDGE_NAME)[\(_callHandlerID)] != null) {
         if configuration.preferences.javaScriptEnabled {
             // add some delay to make it sure _lastImageTouched is updated
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                self.evaluateJavaScript("window.\(JAVASCRIPT_BRIDGE_NAME)._lastImageTouched", completionHandler: {(value, error) in
+                self._evaluateJavaScript("window.\(JAVASCRIPT_BRIDGE_NAME)._lastImageTouched", completionHandler: {(value, error) in
                     let lastImageTouched = value as? [String: Any?]
                     completionHandler(lastImageTouched, error)
                 })
