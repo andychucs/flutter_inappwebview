@@ -185,6 +185,7 @@ export 'url_response.dart' show URLResponse, IOSURLResponse;
 export 'user_preferred_content_mode.dart' show UserPreferredContentMode;
 export 'user_script.dart' show UserScript;
 export 'user_script_injection_time.dart' show UserScriptInjectionTime;
+export 'user_script_source_type.dart' show UserScriptSourceType;
 export 'vertical_scrollbar_position.dart'
     show VerticalScrollbarPosition, AndroidVerticalScrollbarPosition;
 export 'web_archive_format.dart' show WebArchiveFormat;

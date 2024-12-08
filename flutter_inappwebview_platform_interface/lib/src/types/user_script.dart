@@ -2,6 +2,7 @@ import 'package:flutter_inappwebview_internal_annotations/flutter_inappwebview_i
 
 import 'enum_method.dart';
 import 'user_script_injection_time.dart';
+import 'user_script_source_type.dart';
 import 'content_world.dart';
 import '../in_app_webview/platform_inappwebview_controller.dart';
 
@@ -13,8 +14,12 @@ class UserScript_ {
   ///The script’s group name.
   String? groupName;
 
-  ///The script’s source code.
+  ///The script’s source code or asset path.
   String source;
+
+  ///The source type of the script, e.g. [UserScriptSourceType.SCRIPT_STRING]
+  ///or [UserScriptSourceType.ASSET_FILE_PATH].
+  UserScriptSourceType_ sourceType;
 
   ///The time at which to inject the script into the `WebView`.
   UserScriptInjectionTime_ injectionTime;
@@ -62,6 +67,7 @@ class UserScript_ {
   UserScript_(
       {this.groupName,
       required this.source,
+      this.sourceType = UserScriptSourceType_.SCRIPT_STRING,
       required this.injectionTime,
       @Deprecated("Use forMainFrameOnly instead") this.iosForMainFrameOnly,
       this.forMainFrameOnly = true,

@@ -53,11 +53,16 @@ class UserScript {
   @Deprecated('Use forMainFrameOnly instead')
   bool? iosForMainFrameOnly;
 
-  ///The script’s source code.
+  ///The script’s source code or asset path.
   String source;
+
+  ///The source type of the script, e.g. [UserScriptSourceType.SCRIPT_STRING]
+  ///or [UserScriptSourceType.ASSET_FILE_PATH].
+  UserScriptSourceType sourceType;
   UserScript(
       {this.groupName,
       required this.source,
+      this.sourceType = UserScriptSourceType.SCRIPT_STRING,
       required this.injectionTime,
       @Deprecated("Use forMainFrameOnly instead") this.iosForMainFrameOnly,
       this.forMainFrameOnly = true,
@@ -101,6 +106,14 @@ class UserScript {
     if (map['forMainFrameOnly'] != null) {
       instance.forMainFrameOnly = map['forMainFrameOnly'];
     }
+    if (map['sourceType'] != null) {
+      instance.sourceType = switch (enumMethod ?? EnumMethod.nativeValue) {
+        EnumMethod.nativeValue =>
+          UserScriptSourceType.fromNativeValue(map['sourceType']),
+        EnumMethod.value => UserScriptSourceType.fromValue(map['sourceType']),
+        EnumMethod.name => UserScriptSourceType.byName(map['sourceType'])
+      }!;
+    }
     return instance;
   }
 
@@ -117,6 +130,11 @@ class UserScript {
         EnumMethod.name => injectionTime.name()
       },
       "source": source,
+      "sourceType": switch (enumMethod ?? EnumMethod.nativeValue) {
+        EnumMethod.nativeValue => sourceType.toNativeValue(),
+        EnumMethod.value => sourceType.toValue(),
+        EnumMethod.name => sourceType.name()
+      },
     };
   }
 
@@ -127,6 +145,6 @@ class UserScript {
 
   @override
   String toString() {
-    return 'UserScript{allowedOriginRules: $allowedOriginRules, contentWorld: $contentWorld, forMainFrameOnly: $forMainFrameOnly, groupName: $groupName, injectionTime: $injectionTime, source: $source}';
+    return 'UserScript{allowedOriginRules: $allowedOriginRules, contentWorld: $contentWorld, forMainFrameOnly: $forMainFrameOnly, groupName: $groupName, injectionTime: $injectionTime, source: $source, sourceType: $sourceType}';
   }
 }
