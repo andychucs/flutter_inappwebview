@@ -138,7 +138,15 @@ class AndroidInAppWebViewController extends PlatformInAppWebViewController
     this._init(params);
   }
 
-  void _init(PlatformInAppWebViewControllerCreationParams params) {
+  void _init(PlatformInAppWebViewControllerCreationParams params) async {
+    for (final userScripts in _userScripts.values) {
+      for (final userScript in userScripts) {
+        if (userScript.sourceType == UserScriptSourceType.ASSET_FILE_PATH) {
+          userScript.source = await rootBundle.loadString(userScript.source);
+        }
+      }
+    }
+
     _controllerFromPlatform =
         params.webviewParams?.controllerFromPlatform?.call(this) ?? this;
 
