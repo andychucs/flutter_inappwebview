@@ -77,7 +77,7 @@ public class InAppWebViewSettings: ISettings<InAppWebView> {
     var underPageBackgroundColor: String?
     var isTextInteractionEnabled = true
     var isSiteSpecificQuirksModeEnabled = true
-    var upgradeKnownHostsToHTTPS = true
+    var upgradeKnownHostsToHTTPS = false
     var isElementFullscreenEnabled = true
     var isFindInteractionEnabled = false
     var minimumViewportInset: UIEdgeInsets? = nil
@@ -174,7 +174,7 @@ public class InAppWebViewSettings: ISettings<InAppWebView> {
             }
             if #available(iOS 15.0, *) {
                 realSettings["isTextInteractionEnabled"] = configuration.preferences.isTextInteractionEnabled
-                realSettings["upgradeKnownHostsToHTTPS"] = configuration.upgradeKnownHostsToHTTPS
+                realSettings["upgradeKnownHostsToHTTPS"] = false
                 realSettings["underPageBackgroundColor"] = webView.underPageBackgroundColor.hexString
             }
             if #available(iOS 15.4, *) {

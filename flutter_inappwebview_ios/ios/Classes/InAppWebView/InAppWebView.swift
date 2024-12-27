@@ -720,7 +720,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate,
             }
             
             if #available(iOS 15.0, *) {
-                configuration.upgradeKnownHostsToHTTPS = settings.upgradeKnownHostsToHTTPS
+                configuration.upgradeKnownHostsToHTTPS = false
             }
         }
         
@@ -1368,9 +1368,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate,
         }
         
         if #available(iOS 15.0, *) {
-            if newSettingsMap["upgradeKnownHostsToHTTPS"] != nil && settings?.upgradeKnownHostsToHTTPS != newSettings.upgradeKnownHostsToHTTPS {
-                configuration.upgradeKnownHostsToHTTPS = newSettings.upgradeKnownHostsToHTTPS
-            }
+            configuration.upgradeKnownHostsToHTTPS = false
             if newSettingsMap["isTextInteractionEnabled"] != nil && settings?.isTextInteractionEnabled != newSettings.isTextInteractionEnabled {
                 configuration.preferences.isTextInteractionEnabled = newSettings.isTextInteractionEnabled
             }
